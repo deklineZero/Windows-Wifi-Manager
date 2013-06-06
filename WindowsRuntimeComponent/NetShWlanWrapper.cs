@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.Xml.XPath;
+using System.Xml;
 
 namespace NetSh
 {
@@ -32,7 +32,7 @@ namespace NetSh
             ExportAllWifiProfiles();
 
             var profiles = new List<WifiProfile>();
-            foreach (string file in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.xml"))
+            foreach (string file in XDirectory.EnumerateFiles(Environment.XCurrentDirectory, "*.xml"))
             {
                 var x = XElement.Load(file);
                 if (x.Name.Namespace == "http://www.microsoft.com/networking/WLAN/profile/v1")
@@ -90,7 +90,6 @@ namespace NetSh
             p.StartInfo.Arguments = arguments ?? String.Empty;
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.Start();
 
             string output = p.StandardOutput.ReadToEnd();

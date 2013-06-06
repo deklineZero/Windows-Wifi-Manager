@@ -5,12 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WifiProfiles
+namespace ClassLibrary
 {
-    class Program
+    class WiFiSecurityStatus
     {
-        
-        static void Main(string[] args)
+        public bool isSecure { get; set; }
+
+        public WiFiSecurityStatus() {
+            this.isSecure = true;
+        }
+
+        public void setSecurityStatus()
+        {
+            var profiles = NetShWrapper.GetWifiProfiles();
+            foreach (var a in profiles)
+                if (NetShWrapper.IsOpenAndAutoWifiProfile(a)) this.isSecure = false;
+        }
+
+        public void checkWifiConnections()
         {
             var profiles = NetShWrapper.GetWifiProfiles();
             bool sawBadWifi = false;
@@ -36,8 +48,6 @@ namespace WifiProfiles
             {
                 Console.WriteLine("\r\nNo WiFi profiles set to OPEN and AUTO connect were found. \r\nOption: Run with /deleteautoopen to auto delete.");
             }
-            //Console.ReadKey();
         }
-        
     }
 }
